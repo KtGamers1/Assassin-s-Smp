@@ -170,10 +170,14 @@
 
         .admin-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 0 20px;}
         .admin-box { background: var(--glass-bg); padding: 30px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); position: relative;}
+        
+        .strict-warning { background: rgba(255,0,0,0.15); border: 1px solid red; padding: 15px; border-radius: 8px; color: #ff4d4d; font-size: 0.9rem; font-weight: bold; margin-bottom: 25px; line-height: 1.5; text-align: center; box-shadow: inset 0 0 10px rgba(255,0,0,0.2); }
+        
         .form-group { margin-bottom: 25px; }
         .form-group label { display: block; margin-bottom: 10px; color: #fff; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; font-family: var(--font-main); outline: none; transition: 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(180, 0, 255, 0.2); }
+        
         .submit-btn { background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; }
         .submit-btn:hover:not(:disabled) { filter: brightness(1.2); box-shadow: 0 0 25px rgba(180, 0, 255, 0.5); }
         .submit-btn:disabled { background: #555; cursor: not-allowed; }
@@ -183,17 +187,18 @@
         .chat-messages { height: 280px; overflow-y: auto; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 8px; border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;}
         
         .msg-wrapper { display: flex; width: 100%; margin-bottom: 5px; }
-        .msg-wrapper.me { justify-content: flex-end; }
-        .msg-wrapper.other { justify-content: flex-start; }
+        .msg-wrapper.me { justify-content: flex-end; } .msg-wrapper.other { justify-content: flex-start; }
         .msg { padding: 10px 15px; border-radius: 12px; max-width: 80%; font-size: 0.9rem; position: relative;}
         
         .msg.player { background: rgba(0, 229, 255, 0.2); color: #fff; border: 1px solid rgba(0, 229, 255, 0.4); }
         .msg-wrapper.me .msg.player { border-bottom-right-radius: 2px; background: rgba(180, 0, 255, 0.3); border-color: rgba(180, 0, 255, 0.5); }
         .msg-wrapper.other .msg.player { border-bottom-left-radius: 2px; }
 
-        .msg.admin { background: linear-gradient(135deg, rgba(255,0,0,0.3), rgba(139,0,0,0.5)); color: #fff; border: 1px solid #ff3333; box-shadow: 0 0 15px rgba(255,0,0,0.4); font-weight: 600; text-shadow: 0 0 5px black; }
-        .msg-wrapper.me .msg.admin { border-bottom-right-radius: 2px; }
-        .msg-wrapper.other .msg.admin { border-bottom-left-radius: 2px; }
+        /* ADMIN THEMES IN CHAT */
+        .msg.admin { background: linear-gradient(135deg, rgba(40, 10, 10, 0.95), rgba(60, 0, 0, 0.98)); color: #fff; border: 1px solid #ff3333; box-shadow: 0 0 15px rgba(255, 50, 50, 0.3); font-weight: 600; }
+        .msg.owner { background: linear-gradient(135deg, rgba(40, 35, 10, 0.95), rgba(60, 50, 0, 0.98)); color: #fff; border: 1px solid var(--accent); box-shadow: 0 0 15px rgba(255, 221, 0, 0.4); font-weight: 600; }
+        .msg-wrapper.me .msg.admin, .msg-wrapper.me .msg.owner { border-bottom-right-radius: 2px; }
+        .msg-wrapper.other .msg.admin, .msg-wrapper.other .msg.owner { border-bottom-left-radius: 2px; }
 
         /* ================= EPIC MODALS ================= */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; }
@@ -368,13 +373,49 @@
         </div>
 
         <div class="admin-container" id="ticketSystemArea" style="display: none;">
+            
             <div class="admin-box">
                 <h3 style="color: var(--secondary); margin-bottom: 20px;">Create a Ticket</h3>
-                <div class="form-group"><label>Department</label><select id="tDept" onchange="togglePlayerField()"><option value="Player Report">Player Report</option><option value="Bug Report">Bug Report</option><option value="General Help">General Help</option><option value="Feedback">Feedback</option></select></div>
-                <div class="form-group" id="tPlayerGroup"><label>Which player is involved? (IGN)</label><input type="text" id="tPlayer" placeholder="e.g. Hacker123"></div>
+                
+                <div class="strict-warning">
+                    ⚠️ STRICT INSTRUCTION: You MUST enter your correct Discord Username. We will contact you on Discord for verification. If you fail to verify, WE WILL NOT SUPPORT YOU!
+                </div>
+
+                <div class="form-group"><label>Department</label>
+                    <select id="tDept" onchange="togglePlayerField()">
+                        <option value="General Help">General Help</option>
+                        <option value="Player Report">Player Report</option>
+                        <option value="Bug Report">Bug Report</option>
+                        <option value="Feedback">Feedback</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="tPlayerGroup" style="display: none;">
+                    <label>Target Player IGN (If applicable)</label>
+                    <input type="text" id="tPlayer" placeholder="e.g. Hacker123">
+                </div>
+
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label>Discord Username <span style="color:red">*Mandatory</span></label>
+                        <input type="text" id="tDiscord" placeholder="e.g. kt.deore" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label>Email Address</label>
+                        <input type="email" id="tEmail" placeholder="your@email.com">
+                    </div>
+                </div>
+
                 <div class="form-group"><label>Subject</label><input type="text" id="tSubj" placeholder="Short description"></div>
-                <div class="form-group"><label>Message</label><textarea id="tMsg" rows="3" placeholder="Explain the issue..."></textarea></div>
-                <button class="submit-btn" onclick="createTicket()">Submit Ticket</button>
+                <div class="form-group"><label>Message</label><textarea id="tMsg" rows="3" placeholder="Provide a detailed explanation of your issue..."></textarea></div>
+                
+                <div class="form-group">
+                    <label style="color: var(--primary);">Supporting Evidence (Screenshots/Images)</label>
+                    <input type="file" id="tImages" accept="image/*" multiple style="background: transparent; border: 1px dashed var(--primary); padding: 10px; width: 100%; color: white;">
+                    <small style="color: #aaa; font-size: 0.8rem;">Max 3 Images. Upto 10MB per image.</small>
+                </div>
+
+                <button id="submitTicketBtn" class="submit-btn" onclick="submitWebhookTicket()">Submit Epic Ticket</button>
             </div>
 
             <div class="admin-box">
@@ -431,6 +472,8 @@
             messagingSenderId: "977840645919",
             appId: "1:977840645919:web:94be15962ee4631e98b22a"
         };
+
+        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1480899848927711385/fh_cO39L0F9YqeY6M3vDz4aGURtkgJ6SnkZia63XObf-nJiIeyvNTipOwD14FvoCUZLF";
 
         let isDbConnected = false;
         let db;
@@ -659,23 +702,92 @@
             });
         }
 
-        // --- TICKET & INBOX ---
+        // --- EPIC WEBHOOK TICKET LOGIC ---
         function togglePlayerField() {
             const v = document.getElementById('tDept').value;
             document.getElementById('tPlayerGroup').style.display = (v === 'Player Report') ? 'block' : 'none';
         }
 
-        function createTicket() {
-            const dept = document.getElementById('tDept').value; const target = document.getElementById('tPlayer').value;
-            const subj = document.getElementById('tSubj').value; const msg = document.getElementById('tMsg').value;
-            if(!subj || !msg) return showToast('Subject & Message are required!');
-            if(dept === 'Player Report' && !target) return showToast('Mention player name!');
+        async function submitWebhookTicket() {
+            const dept = document.getElementById('tDept').value;
+            const target = document.getElementById('tPlayer') ? document.getElementById('tPlayer').value : '';
+            const discord = document.getElementById('tDiscord').value.trim();
+            const email = document.getElementById('tEmail').value.trim();
+            const subj = document.getElementById('tSubj').value.trim();
+            const msgText = document.getElementById('tMsg').value.trim();
+            const files = document.getElementById('tImages').files;
 
-            const id = Math.floor(Math.random() * 90000) + 10000;
-            // NEW: Added status 'open' by default
-            tickets.unshift({ id, author: activeUser.name, dept, target: target||'N/A', subject: subj, status: 'open', msgs: [{ sender: activeUser.name, text: msg, role: activeUser.role }] });
-            syncToCloud(); document.getElementById('tSubj').value = ''; document.getElementById('tMsg').value = '';
-            showToast('Ticket Generated!'); if(!isDbConnected) loadTickets();
+            // Strict Validations
+            if(!discord) return showToast('Discord Username is MANDATORY!');
+            if(!subj || !msgText) return showToast('Subject and Message are required!');
+            if(dept === 'Player Report' && !target) return showToast('Mention player name!');
+            if(files.length > 3) return showToast('Maximum 3 images allowed!');
+
+            // 10MB limit per image
+            for(let i=0; i<files.length; i++) {
+                if(files[i].size > 10 * 1024 * 1024) return showToast(`Image ${i+1} is larger than 10MB!`);
+            }
+
+            const btn = document.getElementById('submitTicketBtn');
+            btn.innerText = "Sending to Discord..."; 
+            btn.disabled = true;
+
+            const ticketId = Math.floor(Math.random() * 90000) + 10000;
+            const formData = new FormData();
+            
+            const embed = {
+                title: `🚨 EPIC TICKET: #${ticketId} 🚨`,
+                description: `**Department:** ${dept}\n**Subject:** ${subj}`,
+                color: 0x00e5ff,
+                fields: [
+                    { name: "🛡️ Player IGN", value: `\`${activeUser.name}\``, inline: true },
+                    { name: "👾 Discord Username", value: `**${discord}**`, inline: true },
+                    { name: "📧 Email", value: email || "*Not Provided*", inline: true },
+                    { name: "📝 Message", value: `>>> ${msgText}`, inline: false }
+                ],
+                footer: { text: "Assassin's SMP Security & Support", icon_url: "https://mc-heads.net/avatar/" + activeUser.name }
+            };
+
+            // Add target field if it's a player report
+            if(dept === 'Player Report' && target) {
+                embed.fields.splice(3, 0, { name: "🎯 Target Player", value: target, inline: true });
+            }
+
+            formData.append("payload_json", JSON.stringify({
+                content: `New ticket created by **${discord}**! Admin will verify soon.`,
+                embeds: [embed]
+            }));
+
+            // Append Files to Webhook
+            for (let i = 0; i < files.length; i++) {
+                formData.append(`file[${i}]`, files[i]);
+            }
+
+            try {
+                const response = await fetch(DISCORD_WEBHOOK_URL, { method: "POST", body: formData });
+                if(!response.ok) throw new Error("Discord rejected the payload");
+
+                // Save lightweight data to Database for Inbox view
+                const dbTicket = {
+                    id: ticketId, author: activeUser.name, discord: discord, dept: dept, target: target||'N/A', subject: subj, status: 'open',
+                    msgs: [{ sender: activeUser.name, text: msgText, role: activeUser.role }]
+                };
+                tickets.unshift(dbTicket);
+                syncToCloud();
+
+                // Clear Form
+                document.getElementById('tDiscord').value = ''; document.getElementById('tEmail').value = '';
+                document.getElementById('tPlayer').value = ''; document.getElementById('tSubj').value = ''; 
+                document.getElementById('tMsg').value = ''; document.getElementById('tImages').value = '';
+                
+                showToast('Epic Ticket Sent to Discord Successfully!');
+                if(!isDbConnected) loadTickets();
+            } catch(e) {
+                console.error(e);
+                showToast('Error sending to Discord!');
+            } finally {
+                btn.innerText = "Submit Epic Ticket"; btn.disabled = false;
+            }
         }
 
         function loadTickets() {
@@ -708,7 +820,7 @@
                 syncToCloud();
                 if(!isDbConnected) renderChatMsgs();
                 showToast(t.status === 'locked' ? 'Ticket Locked!' : 'Ticket Unlocked!');
-                loadTickets(); // Refresh list to show lock icon
+                loadTickets(); 
             }
         }
 
@@ -716,7 +828,6 @@
             const t = tickets.find(x => x.id === currentChatId);
             const box = document.getElementById('chatMsgContainer'); box.innerHTML = '';
             
-            // Generate Lock/Unlock button for admins
             let lockBtnHtml = '';
             if (activeUser.role === 'admin') {
                 let btnText = t.status === 'locked' ? '<i class="fas fa-unlock"></i> Unlock Ticket' : '<i class="fas fa-lock"></i> Lock Ticket';
@@ -729,12 +840,28 @@
 
             t.msgs.forEach(m => {
                 let isMe = (m.sender === activeUser.name && m.role === activeUser.role);
-                let wrapperCls = isMe ? 'me' : 'other'; let msgCls = (m.role === 'admin') ? 'admin' : 'player'; let displayName = (m.role === 'admin') ? '🛡️ ADMIN' : m.sender;
-                box.innerHTML += `<div class="msg-wrapper ${wrapperCls}"><div class="msg ${msgCls}"><div style="font-size: 0.75rem; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">${displayName}</div>${m.text}</div></div>`;
+                let wrapperCls = isMe ? 'me' : 'other'; 
+                let msgCls = (m.role === 'admin') ? 'admin' : 'player'; 
+                
+                // --- CUSTOM STAFF / OWNER DISPLAY LOGIC ---
+                let displayName = m.sender;
+                let nameColor = "rgba(255,255,255,0.8)"; // Normal color
+                
+                if (m.role === 'admin') {
+                    if (m.sender === 'staff') {
+                        displayName = 'OWNER';
+                        nameColor = '#ffdd00'; // Yellow for Owner
+                        msgCls = 'owner';
+                    } else {
+                        displayName = 'Admin';
+                        nameColor = '#ff5555'; // Red for normal Admin
+                    }
+                }
+
+                box.innerHTML += `<div class="msg-wrapper ${wrapperCls}"><div class="msg ${msgCls}"><div style="font-size: 0.75rem; color: ${nameColor}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">${displayName}</div>${m.text}</div></div>`;
             });
             box.scrollTop = box.scrollHeight;
 
-            // Input lock logic
             let inp = document.getElementById('chatReplyInput');
             let sendBtn = document.getElementById('chatSendBtn');
             if (t.status === 'locked' && activeUser.role !== 'admin') {
@@ -748,11 +875,36 @@
             }
         }
 
-        function sendReply() {
+        async function sendReply() {
             const inp = document.getElementById('chatReplyInput');
-            if(!inp.value.trim() || !currentChatId) return;
-            tickets.find(x => x.id === currentChatId).msgs.push({ sender: activeUser.name, text: inp.value.trim(), role: activeUser.role });
-            syncToCloud(); inp.value = ''; if(!isDbConnected) renderChatMsgs();
+            const replyText = inp.value.trim();
+            if(!replyText || !currentChatId) return;
+            
+            let t = tickets.find(x => x.id === currentChatId);
+            t.msgs.push({ sender: activeUser.name, text: replyText, role: activeUser.role });
+            syncToCloud(); inp.value = ''; 
+            if(!isDbConnected) renderChatMsgs();
+
+            // Webhook Notification when Admin / OWNER Replies
+            if (activeUser.role === 'admin') {
+                
+                let roleTitle = activeUser.name === 'staff' ? 'OWNER' : 'Admin';
+                let roleColor = activeUser.name === 'staff' ? 0xffdd00 : 0xff3333; // Yellow for Owner, Red for Admin
+
+                const embed = {
+                    title: `💬 ${roleTitle} Reply on Ticket #${t.id}`,
+                    color: roleColor, 
+                    description: `**${roleTitle} says:**\n>>> ${replyText}`,
+                    footer: { text: `Replying to IGN: ${t.author}` }
+                };
+                
+                try {
+                    await fetch(DISCORD_WEBHOOK_URL, {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ content: `**${t.discord || 'User'}**, you have a new ${roleTitle} reply from Assassin's SMP!`, embeds: [embed] })
+                    });
+                } catch(e) { console.error("Webhook Error on Reply:", e); }
+            }
         }
 
     </script>
