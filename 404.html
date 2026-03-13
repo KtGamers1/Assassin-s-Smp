@@ -104,12 +104,18 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         .timer-container h2 { font-family: var(--font-epic); font-size: clamp(3rem, 10vw, 5rem); letter-spacing: 5px; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; color: transparent; margin: 0; line-height: 1; text-shadow: 0 0 30px rgba(0, 229, 255, 0.3); }
 
-        .server-ips { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; z-index: 10; margin-top: 20px; width: 100%; padding: 0 20px;}
-        .ip-box { background: var(--glass-bg); border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px 30px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; }
+        .server-ips { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; z-index: 10; margin-top: 20px; width: 100%; padding: 0 20px;}
+        .ip-box { background: var(--glass-bg); border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 15px; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; flex: 1; min-width: 250px; max-width: 350px;}
         .ip-box:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--primary); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4); transform: translateY(-5px); }
-        .ip-text { font-family: var(--font-epic); font-size: 2.2rem; color: #fff; line-height: 1;}
+        .ip-text { font-family: var(--font-epic); font-size: 1.8rem; color: #fff; line-height: 1;}
         .ip-label { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; text-align: left;}
-        .cross-play-tag { margin-top: 30px; font-weight: 800; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-size: clamp(0.9rem, 3vw, 1.1rem); background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--accent); text-align: center;}
+        
+        .bedrock-instructions { margin-top: 25px; background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.3); padding: 20px; border-radius: 12px; width: 90%; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left; font-size: 0.95rem; backdrop-filter: blur(5px);}
+        .bedrock-instructions h4 { color: var(--accent); margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;}
+        .bedrock-instructions ol { margin-left: 20px; color: #ddd; line-height: 1.8; }
+        .bedrock-instructions strong { color: white; }
+
+        .cross-play-tag { margin-top: 25px; font-weight: 800; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-size: clamp(0.9rem, 3vw, 1.1rem); background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--accent); text-align: center; display: inline-block;}
 
         /* ================= EPIC STAFF SECTION ================= */
         .staff-section { max-width: 1200px; margin: 0 auto; }
@@ -169,7 +175,8 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; font-family: var(--font-main); outline: none; transition: 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(180, 0, 255, 0.2); }
         .submit-btn { background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; }
-        .submit-btn:hover { filter: brightness(1.2); box-shadow: 0 0 25px rgba(180, 0, 255, 0.5); }
+        .submit-btn:hover:not(:disabled) { filter: brightness(1.2); box-shadow: 0 0 25px rgba(180, 0, 255, 0.5); }
+        .submit-btn:disabled { background: #555; cursor: not-allowed; }
 
         .chat-ticket { background: rgba(0,0,0,0.5); padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; border-left: 3px solid var(--secondary); transition: 0.3s;}
         .chat-ticket:hover { background: rgba(255,255,255,0.05); transform: translateX(5px);}
@@ -223,7 +230,8 @@
             .hosting-section { flex-direction: column; padding: 20px; text-align: center;}
             .admin-container { grid-template-columns: 1fr; }
             .server-ips { flex-direction: column; }
-            .ip-box { width: 100%; }
+            .ip-box { width: 100%; max-width: 100%;}
+            .bedrock-instructions { width: 100%; padding: 15px; }
         }
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -264,10 +272,31 @@
                 <div class="hero-title"><img src="./WhatsApp Image 2026-03-10 at 13.56.54 (7).jpeg" alt="Assassin's SMP" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x100?text=TITLE';"></div>
                 <div class="season-badge">Season 3</div>
                 <div class="timer-container"><p style="color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">Server Launches In</p><h2 id="epic-timer">Loading...</h2></div>
+                
                 <div class="server-ips">
-                    <div class="ip-box" onclick="copyIP('play.ktsmp.in', 'Java IP Copied!')"><div><div class="ip-label"><i class="fas fa-gamepad"></i> Java Edition</div><div class="ip-text">play.ktsmp.in</div></div><i class="far fa-copy" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i></div>
-                    <div class="ip-box" onclick="copyIP('19132', 'Bedrock Port Copied!')"><div><div class="ip-label"><i class="fas fa-mobile-alt"></i> Bedrock Port</div><div class="ip-text">19132</div></div><i class="far fa-copy" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i></div>
+                    <div class="ip-box" onclick="copyIP('play.ktsmp.in:4003', 'Java IP Copied!')">
+                        <div><div class="ip-label"><i class="fas fa-gamepad"></i> Java Edition</div><div class="ip-text" style="font-size: 1.6rem;">play.ktsmp.in:4003</div></div><i class="far fa-copy" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="ip-box" onclick="copyIP('play.ktsmp.in', 'Bedrock IP Copied!')">
+                        <div><div class="ip-label"><i class="fas fa-mobile-alt"></i> Bedrock IP</div><div class="ip-text" style="font-size: 1.6rem;">play.ktsmp.in</div></div><i class="far fa-copy" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="ip-box" onclick="copyIP('4003', 'Bedrock Port Copied!')">
+                        <div><div class="ip-label"><i class="fas fa-plug"></i> Bedrock Port</div><div class="ip-text" style="font-size: 1.6rem;">4003</div></div><i class="far fa-copy" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i>
+                    </div>
                 </div>
+
+                <div class="bedrock-instructions">
+                    <h4><i class="fas fa-info-circle"></i> How to join on Bedrock (MCPE):</h4>
+                    <ol>
+                        <li>Open Minecraft and go to the <strong>Servers</strong> tab.</li>
+                        <li>Scroll down and tap <strong>Add Server</strong>.</li>
+                        <li>Server Name: <strong>Assassin's SMP</strong></li>
+                        <li>Server Address: <strong>play.ktsmp.in</strong></li>
+                        <li>Port: <strong>4003</strong></li>
+                        <li>Tap <strong>Save</strong> and click Join!</li>
+                    </ol>
+                </div>
+
                 <div class="cross-play-tag">⚡ Cross Connection | Java + PE ⚡</div>
             </div>
         </section>
@@ -353,11 +382,14 @@
                 <div id="inboxListView"><div id="myTicketsList" style="max-height: 400px; overflow-y: auto; padding-right: 5px;"></div></div>
 
                 <div id="inboxChatView" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;"><strong style="color: var(--accent); font-size: 1.2rem;" id="chatSubjectTitle">Ticket</strong><button style="background: #333; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;" onclick="closeChat()">Back</button></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <strong style="color: var(--accent); font-size: 1.2rem;" id="chatSubjectTitle">Ticket</strong>
+                        <div id="chatHeaderControls"></div>
+                    </div>
                     <div class="chat-messages" id="chatMsgContainer"></div>
                     <div style="display: flex; gap: 10px;">
                         <input type="text" id="chatReplyInput" style="flex: 1; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.5); color: white; border: 1px solid rgba(255,255,255,0.1); outline: none;" placeholder="Type a reply...">
-                        <button class="submit-btn" style="width: auto; padding: 10px 25px;" onclick="sendReply()">Send</button>
+                        <button id="chatSendBtn" class="submit-btn" style="width: auto; padding: 10px 25px;" onclick="sendReply()">Send</button>
                     </div>
                 </div>
             </div>
@@ -505,7 +537,7 @@
         const targetDate = new Date("2026-03-13T17:00:00+05:30").getTime();
         function updateTimer() {
             const now = new Date().getTime(); const distance = targetDate - now;
-            if (distance <= 0) { document.getElementById('epic-timer').innerHTML = "SERVER IS LIVE!"; return; }
+            if (distance <= 0) { document.getElementById('epic-timer').innerHTML = "NOW LIVE!"; return; }
             let h = Math.floor((distance / 1000) / 3600); let m = Math.floor(((distance / 1000) % 3600) / 60); let s = Math.floor((distance / 1000) % 60);
             document.getElementById('epic-timer').innerHTML = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
@@ -640,7 +672,8 @@
             if(dept === 'Player Report' && !target) return showToast('Mention player name!');
 
             const id = Math.floor(Math.random() * 90000) + 10000;
-            tickets.unshift({ id, author: activeUser.name, dept, target: target||'N/A', subject: subj, msgs: [{ sender: activeUser.name, text: msg, role: activeUser.role }] });
+            // NEW: Added status 'open' by default
+            tickets.unshift({ id, author: activeUser.name, dept, target: target||'N/A', subject: subj, status: 'open', msgs: [{ sender: activeUser.name, text: msg, role: activeUser.role }] });
             syncToCloud(); document.getElementById('tSubj').value = ''; document.getElementById('tMsg').value = '';
             showToast('Ticket Generated!'); if(!isDbConnected) loadTickets();
         }
@@ -654,29 +687,65 @@
             list.innerHTML = '';
             myT.forEach(t => {
                 let bdg = t.dept === 'Player Report' ? 'red' : 'var(--primary)';
-                list.innerHTML += `<div class="chat-ticket" style="border-left-color: ${bdg}" onclick="openChat(${t.id})"><strong style="color: white; font-size: 1.1rem;">#${t.id} - ${t.subject}</strong><div style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">${activeUser.role==='admin' ? `By: ${t.author} | ` : ''} Dept: ${t.dept}</div></div>`;
+                let lockIndicator = t.status === 'locked' ? ' <i class="fas fa-lock" style="color:red; font-size:0.8rem;"></i>' : '';
+                list.innerHTML += `<div class="chat-ticket" style="border-left-color: ${bdg}" onclick="openChat(${t.id})"><strong style="color: white; font-size: 1.1rem;">#${t.id} - ${t.subject}${lockIndicator}</strong><div style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">${activeUser.role==='admin' ? `By: ${t.author} | ` : ''} Dept: ${t.dept}</div></div>`;
             });
         }
 
         function openChat(id) {
             currentChatId = id; document.getElementById('inboxListView').style.display = 'none'; document.getElementById('inboxChatView').style.display = 'block';
-            document.getElementById('chatSubjectTitle').innerText = `Ticket #${id}`; renderChatMsgs();
+            renderChatMsgs();
         }
 
         function closeChat() {
             currentChatId = null; document.getElementById('inboxChatView').style.display = 'none'; document.getElementById('inboxListView').style.display = 'block';
         }
 
+        function toggleTicketLock(id) {
+            let t = tickets.find(x => x.id === id);
+            if (t) {
+                t.status = t.status === 'locked' ? 'open' : 'locked';
+                syncToCloud();
+                if(!isDbConnected) renderChatMsgs();
+                showToast(t.status === 'locked' ? 'Ticket Locked!' : 'Ticket Unlocked!');
+                loadTickets(); // Refresh list to show lock icon
+            }
+        }
+
         function renderChatMsgs() {
             const t = tickets.find(x => x.id === currentChatId);
             const box = document.getElementById('chatMsgContainer'); box.innerHTML = '';
             
+            // Generate Lock/Unlock button for admins
+            let lockBtnHtml = '';
+            if (activeUser.role === 'admin') {
+                let btnText = t.status === 'locked' ? '<i class="fas fa-unlock"></i> Unlock Ticket' : '<i class="fas fa-lock"></i> Lock Ticket';
+                let btnColor = t.status === 'locked' ? 'green' : 'red';
+                lockBtnHtml = `<button style="background: ${btnColor}; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-right: 10px;" onclick="toggleTicketLock(${t.id})">${btnText}</button>`;
+            }
+
+            document.getElementById('chatSubjectTitle').innerHTML = `Ticket #${t.id} ${t.status === 'locked' ? '<span style="color:red; font-size:0.8rem; margin-left:10px;">[LOCKED]</span>' : ''}`;
+            document.getElementById('chatHeaderControls').innerHTML = lockBtnHtml + `<button style="background: #333; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;" onclick="closeChat()">Back</button>`;
+
             t.msgs.forEach(m => {
                 let isMe = (m.sender === activeUser.name && m.role === activeUser.role);
                 let wrapperCls = isMe ? 'me' : 'other'; let msgCls = (m.role === 'admin') ? 'admin' : 'player'; let displayName = (m.role === 'admin') ? '🛡️ ADMIN' : m.sender;
                 box.innerHTML += `<div class="msg-wrapper ${wrapperCls}"><div class="msg ${msgCls}"><div style="font-size: 0.75rem; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">${displayName}</div>${m.text}</div></div>`;
             });
             box.scrollTop = box.scrollHeight;
+
+            // Input lock logic
+            let inp = document.getElementById('chatReplyInput');
+            let sendBtn = document.getElementById('chatSendBtn');
+            if (t.status === 'locked' && activeUser.role !== 'admin') {
+                inp.disabled = true;
+                inp.placeholder = "This ticket has been locked by an admin.";
+                sendBtn.disabled = true;
+            } else {
+                inp.disabled = false;
+                inp.placeholder = "Type a reply...";
+                sendBtn.disabled = false;
+            }
         }
 
         function sendReply() {
