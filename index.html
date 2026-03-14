@@ -6,9 +6,7 @@
     <title>Assassin's SMP S3 | Ultimate Cross-Play</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0/bundles/skinview3d.bundle.min.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -98,7 +96,7 @@
             text-align: center; font-family: var(--font-epic); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 40px; text-transform: uppercase; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; letter-spacing: 2px; line-height: 1.1;
         }
 
-        /* ================= HERO SECTION ================= */
+        /* ================= HERO SECTION & 3D SKINS ================= */
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh; padding-top: 120px; position: relative; }
         .skin-3d-left, .skin-3d-right { position: absolute; bottom: 5%; z-index: 1; filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.3)); transition: filter 0.3s; cursor: grab; }
         .skin-3d-left:active, .skin-3d-right:active { cursor: grabbing; }
@@ -227,11 +225,11 @@
         .admin-box { background: var(--glass-bg); padding: 30px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); position: relative;}
         
         .strict-warning { background: rgba(255,0,0,0.15); border: 1px solid red; padding: 15px; border-radius: 8px; color: #ff4d4d; font-size: 0.9rem; font-weight: bold; margin-bottom: 25px; line-height: 1.5; text-align: center; box-shadow: inset 0 0 10px rgba(255,0,0,0.2); }
-        
+
         .form-group { margin-bottom: 25px; }
         .form-group label { display: block; margin-bottom: 10px; color: #fff; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; font-family: var(--font-main); outline: none; transition: 0.3s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(180, 0, 255, 0.2); transform: scale(1.01);}
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(180, 0, 255, 0.2); }
         
         .submit-btn { background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; }
         .submit-btn:hover:not(:disabled) { filter: brightness(1.2); box-shadow: 0 5px 25px rgba(180, 0, 255, 0.5); transform: translateY(-2px);}
@@ -605,7 +603,7 @@
             { id: 'staff', pass: 'KtGamers138@Kt' },
             { id: 'nbr24102006@gmail.com', pass: '#Godlike241036@' },
             { id: 'marathe.vidya@gmail.com', pass: '9004721893' },
-            { id: 'sarvedspatil@gmail.com', pass: 'rasuu2507' } // NEW ADMIN ADDED
+            { id: 'sarvedspatil@gmail.com', pass: 'rasuu2507' }
         ];
         
         let users = []; 
@@ -727,15 +725,12 @@
             if (['home', 'staff', 'creators', 'hostira'].includes(target)) {
                 document.getElementById('view-main').classList.add('active');
                 
-                // Initialize tilt for cards if needed
-                if(VanillaTilt) { VanillaTilt.init(document.querySelectorAll(".staff-card, .creator-card")); }
-                
                 if(target !== 'home') {
                     let sec = document.getElementById('section-' + target);
                     if(sec) {
                         setTimeout(() => {
                             sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
+                        }, 50);
                     }
                 } else { window.scrollTo(0,0); }
             } 
@@ -786,7 +781,6 @@
                 if (usr) { 
                     validAuth = true; displayId = usr.id;
                     let cleanName = usr.id.toLowerCase();
-                    // XDUNKNOWN REMOVED FROM ADMIN AUTO-DETECT
                     if(cleanName === 'shxdowxvoid') foundRole = 'youtuber';
                 }
             }
@@ -830,13 +824,44 @@
             activeUser = null; localStorage.removeItem('ktsmp_session'); closeChat(); location.reload();
         }
 
-        // --- UPDATES ---
-        function postUpdate() {
-            const title = document.getElementById('postTitle').value; const text = document.getElementById('postContent').value;
+        // --- NAYA EPIC UPDATE BROADCAST LOGIC (WITH WEBHOOK) ---
+        async function postUpdate() {
+            const title = document.getElementById('postTitle').value.trim(); 
+            const text = document.getElementById('postContent').value.trim();
             if(!title || !text) return showToast('Fill all fields!');
-            updates.unshift({ id: Date.now(), title, text, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) });
-            syncToCloud(); document.getElementById('postTitle').value = ''; document.getElementById('postContent').value = '';
-            showToast('Broadcast Posted!'); if(!isDbConnected) loadUpdates();
+            
+            const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            updates.unshift({ id: Date.now(), title, text, date: dateStr });
+            syncToCloud(); 
+
+            // Yaha Tera Naya Webhook Kaam Karega!
+            const UPDATE_WEBHOOK = "https://discordapp.com/api/webhooks/1481976665235128320/6AhYtEiES7NeW658QWfDZj1-F3uR6HS7qfhaF7FyA_s_hUkPoiz2By91af_J2TJpMOi1";
+            
+            const embed = {
+                title: `📢 ${title}`,
+                description: `>>> ${text}`,
+                color: 0x00e5ff, // Cyan Color
+                footer: { 
+                    text: `Assassin's SMP Network | Posted by ${activeUser.name}`, 
+                    icon_url: "https://mc-heads.net/avatar/" + activeUser.name 
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                await fetch(UPDATE_WEBHOOK, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: "@everyone **New Server Announcement!**", embeds: [embed] })
+                });
+            } catch(e) {
+                console.error("Webhook failed:", e);
+            }
+
+            document.getElementById('postTitle').value = ''; 
+            document.getElementById('postContent').value = '';
+            showToast('Broadcast Posted to Website & Discord!'); 
+            if(!isDbConnected) loadUpdates();
         }
 
         function removeUpdate(id) {
