@@ -6,9 +6,7 @@
     <title>Assassin's SMP S3 | Ultimate Cross-Play</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0/bundles/skinview3d.bundle.min.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -21,6 +19,7 @@
             --primary: #00e5ff; 
             --secondary: #b400ff; 
             --accent: #ffdd00;
+            --yt-red: #ff0000;
             --glass-bg: rgba(15, 15, 20, 0.4);
             --glass-border: rgba(255, 255, 255, 0.05);
             --font-main: 'Poppins', sans-serif;
@@ -30,9 +29,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg-dark); color: white;
-            font-family: var(--font-main); overflow-x: hidden; display: flex;
-            flex-direction: column; min-height: 100vh;
+            background-color: var(--bg-dark); 
+            color: white;
+            font-family: var(--font-main); 
+            overflow-x: hidden; 
+            display: flex;
+            flex-direction: column; 
+            min-height: 100vh;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -57,7 +60,9 @@
         /* ================= ANIMATED BACKGROUND ================= */
         .bg-animation {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            background: radial-gradient(circle at 20% 60%, rgba(0, 229, 255, 0.1), transparent 30%), radial-gradient(circle at 80% 40%, rgba(180, 0, 255, 0.1), transparent 30%); filter: blur(60px); animation: pulseBg 8s infinite alternate ease-in-out;
+            background: radial-gradient(circle at 20% 60%, rgba(0, 229, 255, 0.1), transparent 30%), radial-gradient(circle at 80% 40%, rgba(180, 0, 255, 0.1), transparent 30%); 
+            filter: blur(60px); 
+            animation: pulseBg 8s infinite alternate ease-in-out;
         }
         @keyframes pulseBg { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.1); opacity: 1; } }
 
@@ -75,6 +80,7 @@
             letter-spacing: 2px; font-size: 0.9rem; transition: 0.3s; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent;
         }
         nav a:hover, nav a.active { color: var(--primary); text-shadow: 0 0 15px var(--primary); border-bottom: 2px solid var(--primary); }
+        
         .discord-btn {
             background: linear-gradient(90deg, #5865F2, #7289DA); padding: 10px 25px; border-radius: 8px; text-decoration: none; color: white; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); display: inline-block; cursor: pointer;
         }
@@ -90,7 +96,7 @@
             text-align: center; font-family: var(--font-epic); font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 40px; text-transform: uppercase; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; letter-spacing: 2px; line-height: 1.1;
         }
 
-        /* ================= HERO SECTION & 3D SKINS ================= */
+        /* ================= HERO SECTION ================= */
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh; padding-top: 120px; position: relative; }
         .skin-3d-left, .skin-3d-right { position: absolute; bottom: 5%; z-index: 1; filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.3)); transition: filter 0.3s; cursor: grab; }
         .skin-3d-left:active, .skin-3d-right:active { cursor: grabbing; }
@@ -98,24 +104,58 @@
         .skin-3d-right:hover { filter: drop-shadow(0 0 50px rgba(180, 0, 255, 0.7)); }
         .skin-3d-left { left: 5%; }
         .skin-3d-right { right: 5%; }
+        
         .hero-content-wrapper { position: relative; z-index: 10; background: radial-gradient(circle, rgba(3,3,5,0.7) 0%, transparent 80%); padding: 50px; border-radius: 50%; }
         .hero-title img { width: 90%; max-width: 600px; filter: drop-shadow(0 0 25px rgba(180, 0, 255, 0.6)); animation: float 4s ease-in-out infinite; margin-bottom: 5px; }
         .season-badge { font-family: var(--font-epic); font-size: clamp(2.5rem, 8vw, 3.5rem); color: var(--accent); text-transform: uppercase; letter-spacing: 8px; text-shadow: 0 0 20px var(--accent), 0 0 40px rgba(255, 221, 0, 0.5); margin-bottom: 20px; animation: float 4s ease-in-out infinite; animation-delay: 0.2s; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        
         .timer-container h2 { font-family: var(--font-epic); font-size: clamp(3rem, 10vw, 5rem); letter-spacing: 5px; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; color: transparent; margin: 0; line-height: 1; text-shadow: 0 0 30px rgba(0, 229, 255, 0.3); }
 
-        .server-ips { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; z-index: 10; margin-top: 20px; width: 100%; padding: 0 20px;}
-        .ip-box { background: var(--glass-bg); border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 15px; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; flex: 1; min-width: 250px; max-width: 350px;}
+        .server-ips { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; z-index: 10; margin-top: 20px; width: 100%; padding: 0 20px;}
+        .ip-box { background: var(--glass-bg); border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px 30px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; }
         .ip-box:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--primary); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4); transform: translateY(-5px); }
-        .ip-text { font-family: var(--font-epic); font-size: 1.8rem; color: #fff; line-height: 1;}
+        .ip-text { font-family: var(--font-epic); font-size: 2.2rem; color: #fff; line-height: 1;}
         .ip-label { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; text-align: left;}
         
-        .bedrock-instructions { margin-top: 25px; background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.3); padding: 20px; border-radius: 12px; width: 90%; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left; font-size: 0.95rem; backdrop-filter: blur(5px);}
-        .bedrock-instructions h4 { color: var(--accent); margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;}
-        .bedrock-instructions ol { margin-left: 20px; color: #ddd; line-height: 1.8; }
+        /* 100% FIXED BEDROCK INSTRUCTIONS */
+        .bedrock-instructions { 
+            margin-top: 25px; 
+            background: rgba(0, 229, 255, 0.05); 
+            border: 1px solid rgba(0, 229, 255, 0.3); 
+            padding: 20px; 
+            border-radius: 12px; 
+            width: 90%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            text-align: left !important; /* Force left align */
+            font-size: 0.95rem; 
+            backdrop-filter: blur(5px);
+        }
+        .bedrock-instructions h4 { 
+            color: var(--accent); 
+            margin-bottom: 10px; 
+            font-size: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            justify-content: flex-start;
+        }
+        .bedrock-instructions ol { 
+            margin-left: 0; 
+            padding-left: 20px; 
+            color: #ddd; 
+            line-height: 1.8; 
+            list-style-position: inside; /* Fixes numbers flying to the left edge */
+            text-align: left;
+        }
+        .bedrock-instructions li {
+            text-align: left;
+        }
         .bedrock-instructions strong { color: white; }
 
-        .cross-play-tag { margin-top: 25px; font-weight: 800; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-size: clamp(0.9rem, 3vw, 1.1rem); background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--accent); text-align: center; display: inline-block;}
+        .cross-play-tag { margin-top: 30px; font-weight: 800; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-size: clamp(0.9rem, 3vw, 1.1rem); background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--accent); text-align: center; display: inline-block;}
 
         /* ================= EPIC STAFF SECTION ================= */
         .staff-section { max-width: 1200px; margin: 0 auto; }
@@ -130,8 +170,23 @@
         .staff-role { color: var(--primary); font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; margin-top: 8px; }
 
         /* ================= CREATORS SECTION ================= */
-        .creator-banner { background: radial-gradient(circle at center, rgba(255, 0, 0, 0.05) 0%, rgba(3, 3, 5, 1) 80%), repeating-linear-gradient(45deg, rgba(20, 20, 30, 0.2) 0px, rgba(20, 20, 30, 0.2) 2px, transparent 2px, transparent 10px); border-top: 1px solid rgba(255,0,0,0.1); border-bottom: 1px solid rgba(255,0,0,0.1); }
-        .creator-card { background: linear-gradient(145deg, rgba(15, 15, 20, 0.9), rgba(5, 5, 10, 0.95)); border: 1px solid rgba(255, 0, 0, 0.3); border-radius: 20px; padding: 40px; max-width: 450px; margin: 0 auto; box-shadow: 0 15px 40px rgba(255, 0, 0, 0.15); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; text-align: center; }
+        .creator-banner { 
+            background: radial-gradient(circle at center, rgba(255, 0, 0, 0.05) 0%, rgba(3, 3, 5, 1) 80%), repeating-linear-gradient(45deg, rgba(20, 20, 30, 0.2) 0px, rgba(20, 20, 30, 0.2) 2px, transparent 2px, transparent 10px); 
+            border-top: 1px solid rgba(255,0,0,0.1); 
+            border-bottom: 1px solid rgba(255,0,0,0.1); 
+        }
+        .creator-card { 
+            background: linear-gradient(145deg, rgba(15, 15, 20, 0.9), rgba(5, 5, 10, 0.95)); 
+            border: 1px solid rgba(255, 0, 0, 0.3); 
+            border-radius: 20px; 
+            padding: 40px; 
+            max-width: 450px; 
+            margin: 0 auto; 
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.15); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative; 
+            text-align: center; 
+        }
         .creator-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 50px rgba(255, 0, 0, 0.3); border-color: #ff0000; }
         .creator-logo { width: 130px; height: 130px; margin: 0 auto 20px auto; position: relative; z-index: 1; border-radius: 20px; border: 3px solid #ff0000; box-shadow: 0 0 25px rgba(255, 0, 0, 0.6); object-fit: cover; display: block; background: #111; }
         .creator-name { font-family: var(--font-epic); font-size: 3.5rem; color: white; line-height: 1; margin-bottom: 10px; position: relative; z-index: 1; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
@@ -179,8 +234,25 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(180, 0, 255, 0.2); }
         
         .submit-btn { background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; }
-        .submit-btn:hover:not(:disabled) { filter: brightness(1.2); box-shadow: 0 0 25px rgba(180, 0, 255, 0.5); }
+        .submit-btn:hover:not(:disabled) { filter: brightness(1.2); box-shadow: 0 5px 25px rgba(180, 0, 255, 0.5); transform: translateY(-2px); }
         .submit-btn:disabled { background: #555; cursor: not-allowed; }
+
+        /* ================= EPIC YOUTUBE BUTTON ================= */
+        .epic-promo-btn {
+            background: linear-gradient(45deg, #ff0000, #cc0000, #ff4d4d, #ff0000);
+            background-size: 300% 300%;
+            animation: gradientShift 3s ease infinite;
+            color: white; border: none; padding: 18px; font-size: 1.3rem; font-weight: 900;
+            border-radius: 12px; cursor: pointer; width: 100%; text-transform: uppercase;
+            letter-spacing: 4px; box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .epic-promo-btn:hover:not(:disabled) {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.9);
+            filter: brightness(1.2);
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .chat-ticket { background: rgba(0,0,0,0.5); padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; border-left: 3px solid var(--secondary); transition: 0.3s;}
         .chat-ticket:hover { background: rgba(255,255,255,0.05); transform: translateX(5px);}
@@ -260,6 +332,7 @@
                 <li><a onclick="openNav('hostira')" id="nav-hostira">Partner</a></li>
                 <li><a onclick="openNav('updates')" id="nav-updates">Updates</a></li>
                 <li><a onclick="openNav('support')" id="nav-support">Support</a></li>
+                <li><a onclick="openNav('promo')" id="nav-promo" style="color: var(--accent); text-shadow: 0 0 10px rgba(255,221,0,0.5);">Portal</a></li>
             </ul>
         </nav>
         <div style="display: flex; gap: 15px; align-items: center;">
@@ -315,6 +388,7 @@
                 <div class="staff-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"><div class="card-content"><img src="https://mc-heads.net/avatar/GODXMARATHA/100" alt="GODXMARATHA"><div class="staff-name">GODXMARATHA</div><div class="staff-role">🛡️ Staff</div></div></div>
                 <div class="staff-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"><div class="card-content"><img src="https://mc-heads.net/avatar/PrimeBhai/100" alt="PrimeBhai"><div class="staff-name">PrimeBhai</div><div class="staff-role">🛠️ Staff</div></div></div>
                 <div class="staff-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"><div class="card-content"><img src="https://mc-heads.net/avatar/Redrebeller/100" alt="Redrebeller"><div class="staff-name">Redrebeller</div><div class="staff-role">🎫 Ticket Helper</div></div></div>
+                <div class="staff-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"><div class="card-content"><img src="https://mc-heads.net/avatar/Sarved/100" alt="Sarved"><div class="staff-name">Sarved</div><div class="staff-role">🎫 Ticket Manager</div></div></div>
             </div>
         </section>
 
@@ -429,10 +503,48 @@
                     </div>
                     <div class="chat-messages" id="chatMsgContainer"></div>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="chatReplyInput" style="flex: 1; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.5); color: white; border: 1px solid rgba(255,255,255,0.1); outline: none;" placeholder="Type a reply...">
+                        <input type="text" id="chatReplyInput" style="flex: 1; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.5); color: white; border: 1px solid rgba(255,255,255,0.1); outline: none;" placeholder="Type a reply..." onkeydown="if(event.key === 'Enter') sendReply()">
                         <button id="chatSendBtn" class="submit-btn" style="width: auto; padding: 10px 25px;" onclick="sendReply()">Send</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-promo" class="view-container content-section">
+        <h2 class="section-heading" style="background: linear-gradient(to right, #ff0000, var(--accent)); -webkit-background-clip: text; color: transparent;">Creator Portal</h2>
+
+        <div id="promoWarningBox" style="text-align: center; max-width: 600px; margin: 0 auto; background: rgba(255,0,0,0.1); padding: 40px; border: 1px solid #ff0000; border-radius: 12px; box-shadow: 0 10px 30px rgba(255,0,0,0.2);">
+            <i class="fab fa-youtube" style="font-size: 4rem; color: #ff0000; margin-bottom: 20px; filter: drop-shadow(0 0 15px #ff0000);"></i>
+            <h3 style="font-size: 1.8rem; margin-bottom: 10px; color: white;">Exclusive Creator Access</h3>
+            <p style="color: #ccc; margin-bottom: 25px; line-height: 1.6;">This highly secure portal is strictly reserved for Official Content Creators. Log in with an authorized Creator ID to broadcast your content.</p>
+        </div>
+
+        <div class="admin-container" id="promoSystemArea" style="display: none;">
+            <div class="admin-box" style="grid-column: 1 / -1; max-width: 800px; margin: 0 auto; width: 100%; border-color: var(--yt-red); background: rgba(20, 10, 10, 0.7); box-shadow: 0 10px 40px rgba(255,0,0,0.15);">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 style="color: white; font-family: var(--font-epic); font-size: 3rem; line-height: 1; letter-spacing: 2px; margin-bottom: 5px;">Broadcast Epic Content</h3>
+                    <p style="color: #ccc;">Instantly notify the entire Discord server about your new Video or Live Stream.</p>
+                </div>
+                
+                <div class="strict-warning" style="border-color: var(--yt-red); color: white; background: linear-gradient(90deg, rgba(255,0,0,0.2), transparent);">
+                    🚀 ONLY post high-quality Assassin's SMP related content. Spamming will result in immediate revocation of your Creator Rank.
+                </div>
+                
+                <div class="form-group">
+                    <label style="color: var(--yt-red);">Epic Content Title</label>
+                    <input type="text" id="pTitle" placeholder="e.g. SURVIVING 100 DAYS IN ASSASSIN'S SMP!" style="font-weight: bold; letter-spacing: 1px; border-color: rgba(255,0,0,0.3);">
+                </div>
+                <div class="form-group">
+                    <label style="color: var(--accent);">Live Stream or Video URL</label>
+                    <input type="url" id="pLink" placeholder="https://www.youtube.com/watch?v=..." style="border-color: rgba(255,221,0,0.3);">
+                </div>
+                <div class="form-group">
+                    <label>Hype Description / Message</label>
+                    <textarea id="pDesc" rows="3" placeholder="Tell the server why they MUST watch this right now..."></textarea>
+                </div>
+                
+                <button id="promoSubmitBtn" class="epic-promo-btn" onclick="submitPromo()"><i class="fas fa-satellite-dish"></i> Execute Global Broadcast</button>
             </div>
         </div>
     </div>
@@ -473,7 +585,9 @@
             appId: "1:977840645919:web:94be15962ee4631e98b22a"
         };
 
+        // WEBHOOKS
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1480899848927711385/fh_cO39L0F9YqeY6M3vDz4aGURtkgJ6SnkZia63XObf-nJiIeyvNTipOwD14FvoCUZLF";
+        const DISCORD_PROMO_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1482251097891672074/e4AYiC3hWzAalob6Csct0qTWwE-QbhB02XpxAdgK4iEImWAsYy1qszAtjNbcWqygVAU_";
 
         let isDbConnected = false;
         let db;
@@ -554,11 +668,53 @@
             } catch(e) { console.error("3D Skins error:", e); }
         }
 
-        // --- DYNAMIC URL ROUTING ---
+        // --- FIXED NAVIGATION WITH SMOOTH SCROLL ---
+        function openNav(target, pushHistory = true) {
+            if (pushHistory && window.location.protocol !== 'file:') {
+                let newUrl = target === 'home' ? '/' : '/' + target;
+                window.history.pushState({ section: target }, "", newUrl);
+            }
+
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            let navItem = document.getElementById('nav-' + target);
+            if(navItem) navItem.classList.add('active');
+
+            // Hide other views, show Main if it's a section on the main page
+            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+
+            if (['home', 'staff', 'creators', 'hostira'].includes(target)) {
+                document.getElementById('view-main').classList.add('active');
+                
+                // Initialize tilt for cards if needed
+                if(VanillaTilt) { VanillaTilt.init(document.querySelectorAll(".staff-card, .creator-card")); }
+                
+                if(target !== 'home') {
+                    let sec = document.getElementById('section-' + target);
+                    if(sec) {
+                        setTimeout(() => {
+                            sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    }
+                } else { window.scrollTo(0,0); }
+            } 
+            else if (target === 'updates') {
+                document.getElementById('view-updates').classList.add('active');
+                window.scrollTo(0, 0); loadUpdates();
+            } 
+            else if (target === 'support') {
+                document.getElementById('view-support').classList.add('active');
+                window.scrollTo(0, 0); loadTickets();
+            }
+            else if (target === 'promo') {
+                document.getElementById('view-promo').classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
         function handleRouting() {
             let path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
             let target = 'home';
-            if (['staff', 'hostira', 'creators', 'updates', 'support'].includes(path)) { target = path; }
+            if (['staff', 'hostira', 'creators', 'updates', 'support', 'promo'].includes(path)) { target = path; }
             openNav(target, false); 
         }
 
@@ -575,6 +731,7 @@
             if(activeUser) { restoreSessionUI(); }
             if(window.location.protocol !== 'file:') { handleRouting(); }
             init3DSkins();
+            if(VanillaTilt) { VanillaTilt.init(document.querySelectorAll(".staff-card, .creator-card")); }
         });
 
         const targetDate = new Date("2026-03-13T17:00:00+05:30").getTime();
@@ -594,42 +751,6 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         function switchModal(closeId, openId) { closeModal(closeId); openModal(openId); }
 
-        // --- NAVIGATION ---
-        function openNav(target, pushHistory = true) {
-            if (pushHistory && window.location.protocol !== 'file:') {
-                let newUrl = target === 'home' ? '/' : '/' + target;
-                window.history.pushState({ section: target }, "", newUrl);
-            }
-
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            let navItem = document.getElementById('nav-' + target);
-            if(navItem) navItem.classList.add('active');
-
-            if (['home', 'staff', 'hostira', 'creators'].includes(target)) {
-                document.getElementById('view-main').classList.add('active');
-                document.getElementById('view-updates').classList.remove('active');
-                document.getElementById('view-support').classList.remove('active');
-                if(VanillaTilt) { VanillaTilt.init(document.querySelectorAll(".staff-card, .creator-card")); }
-                
-                if(target !== 'home') {
-                    let sec = document.getElementById('section-' + target);
-                    if(sec) sec.scrollIntoView({ behavior: 'smooth' });
-                } else { window.scrollTo(0,0); }
-            } 
-            else if (target === 'updates') {
-                document.getElementById('view-main').classList.remove('active');
-                document.getElementById('view-support').classList.remove('active');
-                document.getElementById('view-updates').classList.add('active');
-                window.scrollTo(0, 0); loadUpdates();
-            } 
-            else if (target === 'support') {
-                document.getElementById('view-main').classList.remove('active');
-                document.getElementById('view-updates').classList.remove('active');
-                document.getElementById('view-support').classList.add('active');
-                window.scrollTo(0, 0); loadTickets();
-            }
-        }
-
         function reveal() {
             var reveals = document.querySelectorAll(".view-container.active .reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -639,7 +760,7 @@
         }
         window.addEventListener("scroll", reveal);
 
-        // --- AUTHENTICATION ---
+        // --- ADVANCED AUTHENTICATION (AUTO ROLE DETECTION) ---
         function processRegister() {
             const u = document.getElementById('regId').value.trim(); const p = document.getElementById('regPass').value.trim();
             if(!u || !p) return showToast('Fill everything!');
@@ -651,31 +772,65 @@
         function processLogin() {
             const u = document.getElementById('logId').value.trim(); const p = document.getElementById('logPass').value.trim();
             if(!u || !p) return showToast('Enter credentials!');
-            if(ADMINS.find(x => x.id === u && x.pass === p)) { setSession(u, 'admin'); return; }
-            if(users.find(x => x.id.toLowerCase() === u.toLowerCase() && x.pass === p)) { setSession(u, 'user'); return; }
-            showToast('Invalid ID or Password!');
+            
+            let foundRole = 'user';
+            let validAuth = false;
+            let displayId = u;
+
+            let adm = ADMINS.find(x => x.id.toLowerCase() === u.toLowerCase() && x.pass === p);
+            if (adm) { validAuth = true; foundRole = 'admin'; displayId = adm.id; } 
+            else {
+                let usr = users.find(x => x.id.toLowerCase() === u.toLowerCase() && x.pass === p);
+                if (usr) { 
+                    validAuth = true; displayId = usr.id;
+                    let cleanName = usr.id.toLowerCase();
+                    if(cleanName === 'xdunknown69') foundRole = 'admin';
+                    if(cleanName === 'shxdowxvoid') foundRole = 'youtuber';
+                }
+            }
+
+            if(validAuth) {
+                activeUser = { name: displayId, role: foundRole };
+                localStorage.setItem('ktsmp_session', JSON.stringify(activeUser));
+                closeModal('loginModal'); 
+                
+                let welcomeMsg = 'Logged In Successfully.';
+                if(foundRole === 'admin') welcomeMsg = 'Welcome back, Administrator.';
+                if(foundRole === 'youtuber') welcomeMsg = 'Welcome, Content Creator!';
+                
+                showToast(welcomeMsg); restoreSessionUI();
+            } else { showToast('Authentication Failed: Invalid ID or Password.'); }
         }
 
-        function setSession(name, role) {
-            activeUser = { name, role }; localStorage.setItem('ktsmp_session', JSON.stringify(activeUser));
-            closeModal('loginModal'); showToast(`Welcome ${role === 'admin' ? 'Admin ' : ''}${name}!`); restoreSessionUI();
-        }
-        
         function restoreSessionUI() {
             document.getElementById('loginBtn').style.display = 'none'; document.getElementById('logoutBtn').style.display = 'block';
-            document.getElementById('userInfoText').innerText = `[${activeUser.name}]`; document.getElementById('userInfoText').style.display = 'block';
-            document.getElementById('loginWarningBox').style.display = 'none'; document.getElementById('ticketSystemArea').style.display = 'grid';
-            document.getElementById('supportHeading').innerText = activeUser.role === 'admin' ? 'Admin Panel' : 'Support & Inbox';
+            
+            let tag = '';
+            if(activeUser.role === 'admin') tag = activeUser.name.toLowerCase() === 'staff' ? '👑 OWNER | ' : '🛡️ ADMIN | ';
+            if(activeUser.role === 'youtuber') tag = '🎥 CREATOR | ';
+            
+            document.getElementById('userInfoText').innerHTML = `<span style="color:white; font-size:0.8rem;">${tag}</span> ${activeUser.name}`; 
+            document.getElementById('userInfoText').style.display = 'block';
+
+            document.getElementById('loginWarningBox').style.display = 'none'; 
+            document.getElementById('ticketSystemArea').style.display = 'grid';
+            document.getElementById('supportHeading').innerText = activeUser.role === 'admin' ? 'Administrator Helpdesk' : 'Support Center';
+
             if(activeUser.role === 'admin') document.getElementById('adminPostForm').style.display = 'block';
+
+            if(activeUser.role === 'admin' || activeUser.role === 'youtuber') {
+                document.getElementById('promoWarningBox').style.display = 'none';
+                document.getElementById('promoSystemArea').style.display = 'block';
+            } else {
+                document.getElementById('promoWarningBox').style.display = 'block';
+                document.getElementById('promoSystemArea').style.display = 'none';
+            }
+
             if(!isDbConnected) { loadUpdates(); loadTickets(); }
         }
 
         function logout() {
-            activeUser = null; localStorage.removeItem('ktsmp_session'); closeChat();
-            document.getElementById('loginBtn').style.display = 'block'; document.getElementById('logoutBtn').style.display = 'none'; document.getElementById('userInfoText').style.display = 'none';
-            document.getElementById('loginWarningBox').style.display = 'block'; document.getElementById('ticketSystemArea').style.display = 'none';
-            document.getElementById('supportHeading').innerText = 'Support Portal'; document.getElementById('adminPostForm').style.display = 'none';
-            showToast('Logged Out.'); openNav('home');
+            activeUser = null; localStorage.removeItem('ktsmp_session'); closeChat(); location.reload();
         }
 
         // --- UPDATES ---
@@ -702,6 +857,48 @@
             });
         }
 
+        // --- YOUTUBER PROMO LOGIC ---
+        async function submitPromo() {
+            const title = document.getElementById('pTitle').value.trim();
+            const link = document.getElementById('pLink').value.trim();
+            const desc = document.getElementById('pDesc').value.trim();
+
+            if(!title || !link) return showToast('Title and Link are MANDATORY for broadcast!');
+            if(!link.startsWith('http')) return showToast('Please provide a valid URL (starting with http/https)');
+
+            const btn = document.getElementById('promoSubmitBtn');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Transmitting..."; btn.disabled = true;
+
+            const embed = {
+                title: `🎬 ${title}`,
+                url: link,
+                description: desc || "Check out this epic new content from Assassin's SMP!",
+                color: 0xff0000, 
+                fields: [
+                    { name: "🎥 Created By", value: `**${activeUser.name}**`, inline: true },
+                    { name: "🔗 Access Link", value: `[Click Here to View Content](${link})`, inline: true }
+                ],
+                footer: { text: "Assassin's SMP Creator Network", icon_url: "https://mc-heads.net/avatar/" + activeUser.name },
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(DISCORD_PROMO_WEBHOOK_URL, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: `**@everyone**, Content Creator **${activeUser.name}** just dropped something massive! 🔥`, embeds: [embed] })
+                });
+
+                if(!response.ok) throw new Error("Discord rejected the payload. Check your Promo Webhook URL.");
+
+                document.getElementById('pTitle').value = ''; document.getElementById('pLink').value = ''; document.getElementById('pDesc').value = '';
+                showToast('Content Broadcasted Successfully to Discord!');
+            } catch(e) {
+                console.error(e); showToast('Transmission Error. Contact Server Admin.');
+            } finally {
+                btn.innerHTML = "<i class='fas fa-satellite-dish'></i> Execute Global Broadcast"; btn.disabled = false;
+            }
+        }
+
         // --- EPIC WEBHOOK TICKET LOGIC ---
         function togglePlayerField() {
             const v = document.getElementById('tDept').value;
@@ -717,40 +914,37 @@
             const msgText = document.getElementById('tMsg').value.trim();
             const files = document.getElementById('tImages').files;
 
-            // Strict Validations
-            if(!discord) return showToast('Discord Username is MANDATORY!');
-            if(!subj || !msgText) return showToast('Subject and Message are required!');
-            if(dept === 'Player Report' && !target) return showToast('Mention player name!');
-            if(files.length > 3) return showToast('Maximum 3 images allowed!');
+            if(!discord) return showToast('Discord Username is MANDATORY for processing!');
+            if(!subj || !msgText) return showToast('Subject and Detailed Explanation are required!');
+            if(dept === 'Player Report' && !target) return showToast('Target Player IGN must be specified for reports!');
+            if(files.length > 3) return showToast('Exceeded upload limit (Maximum 3 images).');
 
-            // 10MB limit per image
             for(let i=0; i<files.length; i++) {
-                if(files[i].size > 10 * 1024 * 1024) return showToast(`Image ${i+1} is larger than 10MB!`);
+                if(files[i].size > 10 * 1024 * 1024) return showToast(`Attachment ${i+1} exceeds 10MB limit!`);
             }
 
             const btn = document.getElementById('submitTicketBtn');
-            btn.innerText = "Sending to Discord..."; 
-            btn.disabled = true;
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Transmitting to Staff..."; btn.disabled = true;
 
             const ticketId = Math.floor(Math.random() * 90000) + 10000;
             const formData = new FormData();
             
             const embed = {
                 title: `🚨 EPIC TICKET: #${ticketId} 🚨`,
-                description: `**Department:** ${dept}\n**Subject:** ${subj}`,
+                description: `**Classification:** ${dept}\n**Subject:** ${subj}`,
                 color: 0x00e5ff,
                 fields: [
-                    { name: "🛡️ Player IGN", value: `\`${activeUser.name}\``, inline: true },
+                    { name: "🛡️ Client IGN", value: `\`${activeUser.name}\``, inline: true },
                     { name: "👾 Discord Username", value: `**${discord}**`, inline: true },
                     { name: "📧 Email", value: email || "*Not Provided*", inline: true },
                     { name: "📝 Message", value: `>>> ${msgText}`, inline: false }
                 ],
-                footer: { text: "Assassin's SMP Security & Support", icon_url: "https://mc-heads.net/avatar/" + activeUser.name }
+                footer: { text: "Assassin's SMP Security & Support", icon_url: "https://mc-heads.net/avatar/" + activeUser.name },
+                timestamp: new Date().toISOString()
             };
 
-            // Add target field if it's a player report
             if(dept === 'Player Report' && target) {
-                embed.fields.splice(3, 0, { name: "🎯 Target Player", value: target, inline: true });
+                embed.fields.splice(3, 0, { name: "🎯 Target Entity", value: target, inline: true });
             }
 
             formData.append("payload_json", JSON.stringify({
@@ -758,7 +952,6 @@
                 embeds: [embed]
             }));
 
-            // Append Files to Webhook
             for (let i = 0; i < files.length; i++) {
                 formData.append(`file[${i}]`, files[i]);
             }
@@ -767,7 +960,6 @@
                 const response = await fetch(DISCORD_WEBHOOK_URL, { method: "POST", body: formData });
                 if(!response.ok) throw new Error("Discord rejected the payload");
 
-                // Save lightweight data to Database for Inbox view
                 const dbTicket = {
                     id: ticketId, author: activeUser.name, discord: discord, dept: dept, target: target||'N/A', subject: subj, status: 'open',
                     msgs: [{ sender: activeUser.name, text: msgText, role: activeUser.role }]
@@ -775,7 +967,6 @@
                 tickets.unshift(dbTicket);
                 syncToCloud();
 
-                // Clear Form
                 document.getElementById('tDiscord').value = ''; document.getElementById('tEmail').value = '';
                 document.getElementById('tPlayer').value = ''; document.getElementById('tSubj').value = ''; 
                 document.getElementById('tMsg').value = ''; document.getElementById('tImages').value = '';
@@ -786,7 +977,7 @@
                 console.error(e);
                 showToast('Error sending to Discord!');
             } finally {
-                btn.innerText = "Submit Epic Ticket"; btn.disabled = false;
+                btn.innerHTML = "<i class='fas fa-paper-plane'></i> Submit Epic Ticket"; btn.disabled = false;
             }
         }
 
@@ -843,18 +1034,17 @@
                 let wrapperCls = isMe ? 'me' : 'other'; 
                 let msgCls = (m.role === 'admin') ? 'admin' : 'player'; 
                 
-                // --- CUSTOM STAFF / OWNER DISPLAY LOGIC ---
                 let displayName = m.sender;
-                let nameColor = "rgba(255,255,255,0.8)"; // Normal color
+                let nameColor = "rgba(255,255,255,0.8)"; 
                 
                 if (m.role === 'admin') {
-                    if (m.sender === 'staff') {
+                    if (m.sender.toLowerCase() === 'staff') {
                         displayName = 'OWNER';
-                        nameColor = '#ffdd00'; // Yellow for Owner
+                        nameColor = '#ffdd00'; 
                         msgCls = 'owner';
                     } else {
                         displayName = 'Admin';
-                        nameColor = '#ff5555'; // Red for normal Admin
+                        nameColor = '#ff5555'; 
                     }
                 }
 
@@ -872,6 +1062,7 @@
                 inp.disabled = false;
                 inp.placeholder = "Type a reply...";
                 sendBtn.disabled = false;
+                inp.focus();
             }
         }
 
@@ -885,11 +1076,9 @@
             syncToCloud(); inp.value = ''; 
             if(!isDbConnected) renderChatMsgs();
 
-            // Webhook Notification when Admin / OWNER Replies
             if (activeUser.role === 'admin') {
-                
-                let roleTitle = activeUser.name === 'staff' ? 'OWNER' : 'Admin';
-                let roleColor = activeUser.name === 'staff' ? 0xffdd00 : 0xff3333; // Yellow for Owner, Red for Admin
+                let roleTitle = activeUser.name.toLowerCase() === 'staff' ? 'OWNER' : 'Admin';
+                let roleColor = activeUser.name.toLowerCase() === 'staff' ? 0xffdd00 : 0xff3333; 
 
                 const embed = {
                     title: `💬 ${roleTitle} Reply on Ticket #${t.id}`,
@@ -903,10 +1092,9 @@
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ content: `**${t.discord || 'User'}**, you have a new ${roleTitle} reply from Assassin's SMP!`, embeds: [embed] })
                     });
-                } catch(e) { console.error("Webhook Error on Reply:", e); }
+                } catch(e) {}
             }
         }
-
     </script>
 </body>
 </html>
